@@ -75,6 +75,10 @@ public class ItemListener implements Listener {
 			if(i == null) continue;
 			e.setCancelled(true);
 		}
+		
+		Inventory i = DynamicMenuModel.getPlayerInventory((Player) e.getWhoClicked());
+		if(i == null) return;
+		e.setCancelled(true);
 	}
 
 	@EventHandler
