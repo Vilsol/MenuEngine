@@ -6,6 +6,7 @@ import me.vilsol.menuengine.engine.DynamicMenuModel;
 import me.vilsol.menuengine.engine.MenuModel;
 import me.vilsol.menuengine.enums.ClickType;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,6 +16,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class ItemListener implements Listener {
 	
@@ -37,7 +39,9 @@ public class ItemListener implements Listener {
 			Inventory i = m.getMenu().isThisInventory(e.getInventory());
 			if(i == null) continue;
 			e.setCancelled(true);
+			p.setItemOnCursor(new ItemStack(Material.AIR));
 			if(!m.getMenu().isOurItem(e.getCurrentItem())) continue;
+			if(!m.getMenu().getItems().containsKey(e.getSlot())) continue;
 			m.getMenu().getItems().get(e.getSlot()).execute(p, ClickType.getTypeFromAction(e.getAction()));
 			return;
 		}
@@ -54,8 +58,10 @@ public class ItemListener implements Listener {
 					e.setCancelled(true);
 					if(i.getDynamicItems().containsKey(e.getSlot())) {
 						i.getDynamicItems().get(e.getSlot()).execute(p, ClickType.getTypeFromAction(e.getAction()));
+						p.setItemOnCursor(new ItemStack(Material.AIR));
 					}else if(i.getItems().containsKey(e.getSlot())){
 						i.getItems().get(e.getSlot()).execute(p, ClickType.getTypeFromAction(e.getAction()));
+						p.setItemOnCursor(new ItemStack(Material.AIR));
 					}
 				}
 			}else{
