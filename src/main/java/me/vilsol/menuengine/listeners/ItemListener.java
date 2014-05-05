@@ -44,7 +44,7 @@ public class ItemListener implements Listener {
 		DynamicMenuModel m = DynamicMenuModel.getModelFromInventory(i);
 		
 		if(e.getRawSlot() < e.getWhoClicked().getOpenInventory().getTopInventory().getSize()){
-			if(e.getAction() == InventoryAction.PICKUP_ALL || e.getAction() == InventoryAction.PICKUP_HALF || e.getAction() == InventoryAction.PICKUP_ONE || e.getAction() == InventoryAction.PICKUP_SOME){
+			if(e.getAction() == InventoryAction.PICKUP_ALL || e.getAction() == InventoryAction.PICKUP_HALF || e.getAction() == InventoryAction.PICKUP_ONE || e.getAction() == InventoryAction.PICKUP_SOME || e.getAction() == InventoryAction.CLONE_STACK || e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY){
 				if(DynamicMenuModel.isPlaced(i, e.getRawSlot())){
 					((DynamicMenuModel) m).removePlaced(i, e.getRawSlot());
 				}else{

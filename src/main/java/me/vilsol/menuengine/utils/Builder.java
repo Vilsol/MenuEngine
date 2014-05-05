@@ -1,5 +1,7 @@
 package me.vilsol.menuengine.utils;
 
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -30,6 +32,13 @@ public class Builder {
 	public Builder setName(String name){
 		ItemMeta m = item.getItemMeta();
 		m.setDisplayName(name);
+		item.setItemMeta(m);
+		return this;
+	}
+	
+	public Builder setLore(List<String> lore){
+		ItemMeta m = item.getItemMeta();
+		m.setLore(lore);
 		item.setItemMeta(m);
 		return this;
 	}
