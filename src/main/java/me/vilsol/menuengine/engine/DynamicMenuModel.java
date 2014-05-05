@@ -5,6 +5,7 @@ import java.util.HashMap;
 import me.vilsol.menuengine.enums.InventorySize;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class DynamicMenuModel {
@@ -51,6 +52,10 @@ public abstract class DynamicMenuModel {
 
 	public static void openLastMenu(Player plr) {
 		if(last_menu.containsKey(plr)) playerMenus.get(plr).showToPlayer(plr);
+	}
+
+	public static void cleanInventories(Player plr, Inventory inventory) {
+		if(playerMenus.containsKey(plr) && playerMenus.get(plr).isThisInventory(inventory) != null) playerMenus.remove(plr);
 	}
 	
 }

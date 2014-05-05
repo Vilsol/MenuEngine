@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
@@ -83,6 +84,11 @@ public class ItemListener implements Listener {
 		DynamicMenu i = DynamicMenuModel.getMenu((Player) e.getWhoClicked());
 		if(i == null) return;
 		e.setCancelled(true);
+	}
+	
+	@EventHandler
+	public void onInventoryClose(InventoryCloseEvent e) {
+		DynamicMenuModel.cleanInventories((Player) e.getPlayer(), e.getInventory());
 	}
 
 }
