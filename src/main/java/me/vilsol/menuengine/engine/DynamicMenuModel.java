@@ -2,11 +2,13 @@ package me.vilsol.menuengine.engine;
 
 import java.util.HashMap;
 
+import me.vilsol.menuengine.MenuEngine;
 import me.vilsol.menuengine.enums.InventorySize;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class DynamicMenuModel {
 	
@@ -51,11 +53,24 @@ public abstract class DynamicMenuModel {
 	}
 
 	public static void openLastMenu(Player plr) {
-		if(last_menu.containsKey(plr)) playerMenus.get(plr).showToPlayer(plr);
+		if(last_menu.containsKey(plr)){
+			if(playerMenus.containsKey(plr)){
+				playerMenus.get(plr).showToPlayer(plr);
+			}else{
+				createMenu(plr, last_menu.get(plr)).showToPlayer(plr);
+			}
+		}
 	}
 
-	public static void cleanInventories(Player plr, Inventory inventory) {
-		if(playerMenus.containsKey(plr) && playerMenus.get(plr).isThisInventory(inventory) != null) playerMenus.remove(plr);
+	public static void cleanInventories(final Player plr, Inventory inventory) {
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				if(!playerMenus.containsKey(plr)) return;
+				if(playerMenus.get(plr).getInventory().getViewers().size() > 0) return;
+				playerMenus.remove(plr);
+			}
+		}.runTaskLater(MenuEngine.plugin, 1L);
 	}
 	
 }

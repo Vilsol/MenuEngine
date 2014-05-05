@@ -8,7 +8,6 @@ import me.vilsol.menuengine.MenuEngine;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -125,14 +124,6 @@ public class DynamicMenu extends Menu {
 	
 	public HashMap<Integer, MenuItem> getDynamicItems(){
 		return dynamicItems;
-	}
-	
-	@Override
-	public Inventory isThisInventory(Inventory i){
-		if(!inventory.getName().equals(i.getName())) return null;
-		if(inventory.getSize() != i.getSize()) return null;
-		if(inventory.getContents() != i.getContents()) return null;
-		return inventory;
 	}
 	
 }
