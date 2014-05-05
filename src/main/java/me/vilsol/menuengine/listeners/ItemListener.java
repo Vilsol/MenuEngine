@@ -1,6 +1,7 @@
 package me.vilsol.menuengine.listeners;
 
 import me.vilsol.menuengine.engine.ChatCallback;
+import me.vilsol.menuengine.engine.DynamicMenu;
 import me.vilsol.menuengine.engine.DynamicMenuModel;
 import me.vilsol.menuengine.engine.MenuModel;
 import me.vilsol.menuengine.enums.ClickType;
@@ -10,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
@@ -30,34 +30,38 @@ public class ItemListener implements Listener {
 		if(e.getWhoClicked().getOpenInventory() == null) return;
 		if(e.getSlot() < 0) return;
 		
+		Player p = (Player) e.getWhoClicked();
+		
 		for(MenuModel m : MenuModel.menus.values()) {
-			Inventory i = m.isThisInventory(e.getInventory(), (Player) e.getWhoClicked());
+			Inventory i = m.getMenu().isThisInventory(e.getInventory());
 			if(i == null) continue;
 			e.setCancelled(true);
-			if(!m.isOurItem(e.getCurrentItem())) continue;
-			m.items.get(e.getSlot()).execute((Player) e.getWhoClicked(), ClickType.getTypeFromAction(e.getAction()));
+			if(!m.getMenu().isOurItem(e.getCurrentItem())) continue;
+			m.getMenu().getItems().get(e.getSlot()).execute(p, ClickType.getTypeFromAction(e.getAction()));
 			return;
 		}
 		
-		Inventory i = DynamicMenuModel.getPlayerInventory((Player) e.getWhoClicked());
+		DynamicMenu i = DynamicMenuModel.getMenu(p);
 		if(i == null) return;
-		DynamicMenuModel m = DynamicMenuModel.getModelFromInventory(i);
+		DynamicMenuModel m = i.getDynamicParent();
 		
-		if(e.getRawSlot() < e.getWhoClicked().getOpenInventory().getTopInventory().getSize()){
+		if(e.getRawSlot() < p.getOpenInventory().getTopInventory().getSize()){
 			if(e.getAction() == InventoryAction.PICKUP_ALL || e.getAction() == InventoryAction.PICKUP_HALF || e.getAction() == InventoryAction.PICKUP_ONE || e.getAction() == InventoryAction.PICKUP_SOME || e.getAction() == InventoryAction.CLONE_STACK || e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY){
-				if(DynamicMenuModel.isPlaced(i, e.getRawSlot())){
-					((DynamicMenuModel) m).removePlaced(i, e.getRawSlot());
+				if(i.isPlaced(e.getRawSlot())){
+					i.removePlaced(e.getRawSlot());
 				}else{
 					e.setCancelled(true);
-					if(DynamicMenuModel.getInventoryItems(i).containsKey(e.getSlot())) {
-						DynamicMenuModel.getInventoryItems(i).get(e.getSlot()).execute((Player) e.getWhoClicked(), ClickType.getTypeFromAction(e.getAction()));
+					if(i.getDynamicItems().containsKey(e.getSlot())) {
+						i.getDynamicItems().get(e.getSlot()).execute(p, ClickType.getTypeFromAction(e.getAction()));
+					}else if(i.getItems().containsKey(e.getSlot())){
+						i.getItems().get(e.getSlot()).execute(p, ClickType.getTypeFromAction(e.getAction()));
 					}
 				}
 			}else{
 				if(e.getAction() == InventoryAction.SWAP_WITH_CURSOR || e.getAction() == InventoryAction.PLACE_ALL || e.getAction() == InventoryAction.PLACE_ONE || e.getAction() == InventoryAction.PLACE_SOME){
-					boolean allow = ((DynamicMenuModel) m).canPlaceItem(i, (Player) e.getWhoClicked(), e.getRawSlot(), e.getCursor());
+					boolean allow = ((DynamicMenuModel) m).canPlaceItem(i, p, e.getRawSlot(), e.getCursor());
 					if(allow){
-						((DynamicMenuModel) m).placeItem(i, e.getRawSlot(), e.getCursor());
+						i.placeItem(e.getRawSlot(), e.getCursor());
 					}else{
 						e.setCancelled(true);
 					}
@@ -71,19 +75,14 @@ public class ItemListener implements Listener {
 	@EventHandler
 	public void onInventoryDrag(InventoryDragEvent e){
 		for(MenuModel m : MenuModel.menus.values()) {
-			Inventory i = m.isThisInventory(e.getInventory(), (Player) e.getWhoClicked());
+			Inventory i = m.getMenu().isThisInventory(e.getInventory());
 			if(i == null) continue;
 			e.setCancelled(true);
 		}
 		
-		Inventory i = DynamicMenuModel.getPlayerInventory((Player) e.getWhoClicked());
+		DynamicMenu i = DynamicMenuModel.getMenu((Player) e.getWhoClicked());
 		if(i == null) return;
 		e.setCancelled(true);
 	}
 
-	@EventHandler
-	public void onInventoryClose(InventoryCloseEvent e) {
-		DynamicMenuModel.cleanInventories((Player) e.getPlayer(), e.getInventory());
-	}
-	
 }
