@@ -16,7 +16,7 @@ public abstract class DynamicMenuModel {
 	private static HashMap<Player, Class<? extends DynamicMenuModel>> last_menu = new HashMap<Player, Class<? extends DynamicMenuModel>>();
 	private static HashMap<Player, DynamicMenu> playerMenus = new HashMap<Player, DynamicMenu>();
 	
-	protected DynamicMenuModel() {
+	public DynamicMenuModel() {
 		menus.put(this.getClass(), this);
 	}
 	
