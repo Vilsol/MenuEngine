@@ -1,5 +1,6 @@
 package me.vilsol.menuengine.engine;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 import me.vilsol.menuengine.MenuEngine;
@@ -15,9 +16,16 @@ public abstract class DynamicMenuModel {
 	private static HashMap<Class<? extends DynamicMenuModel>, DynamicMenuModel> menus = new HashMap<Class<? extends DynamicMenuModel>, DynamicMenuModel>();
 	private static HashMap<Player, Class<? extends DynamicMenuModel>> last_menu = new HashMap<Player, Class<? extends DynamicMenuModel>>();
 	private static HashMap<Player, DynamicMenu> playerMenus = new HashMap<Player, DynamicMenu>();
+	private static HashMap<Class<? extends DynamicMenuModel>, Class<? extends DynamicMenu>> menu_workers = new HashMap<Class<? extends DynamicMenuModel>, Class<? extends DynamicMenu>>();
 	
-	public DynamicMenuModel() {
+	public DynamicMenuModel(){
 		menus.put(this.getClass(), this);
+		menu_workers.put(this.getClass(), DynamicMenu.class);
+	}
+	
+	public DynamicMenuModel(Class<? extends DynamicMenu> menu) {
+		menus.put(this.getClass(), this);
+		menu_workers.put(this.getClass(), menu);
 	}
 	
 	public abstract void addItems(DynamicMenu i, Player plr);
@@ -31,7 +39,14 @@ public abstract class DynamicMenuModel {
 	public abstract void onPlaceItem(DynamicMenu i, ItemStack item, int slot);
 	
 	public static DynamicMenu createMenu(Player plr, Class<? extends DynamicMenuModel> model){
-		playerMenus.put(plr, new DynamicMenu(menus.get(model).getSize(plr).getSize(), menus.get(model), plr));
+		Class<? extends DynamicMenu> worker = menu_workers.get(model);
+		try {
+			DynamicMenu menu = (DynamicMenu) worker.getConstructors()[0].newInstance(menus.get(model).getSize(plr).getSize(), menus.get(model), plr);
+			playerMenus.put(plr, menu);
+		} catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
+			System.err.println("Wrong Constructor For " + worker.toString() + ", Using default!");
+			playerMenus.put(plr, new DynamicMenu(menus.get(model).getSize(plr).getSize(), menus.get(model), plr));
+		}
 		return playerMenus.get(plr);
 	}
 	
