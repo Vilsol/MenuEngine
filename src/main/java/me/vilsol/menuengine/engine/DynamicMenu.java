@@ -15,6 +15,7 @@ public class DynamicMenu extends Menu {
 
 	private HashMap<Integer, ItemStack> placed = new HashMap<Integer, ItemStack>();
 	private HashMap<Integer, MenuItem> dynamicItems = new HashMap<Integer, MenuItem>();
+	private boolean clearOnClose = true;
 	private DynamicMenuModel parent;
 	private Player owner;
 	
@@ -124,6 +125,14 @@ public class DynamicMenu extends Menu {
 	
 	public HashMap<Integer, MenuItem> getDynamicItems(){
 		return dynamicItems;
+	}
+
+	public boolean isClearOnClose() {
+		return clearOnClose;
+	}
+
+	public void setClearOnClose(boolean clearOnClose) {
+		this.clearOnClose = clearOnClose;
 	}
 	
 }

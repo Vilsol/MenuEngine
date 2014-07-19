@@ -83,7 +83,7 @@ public abstract class DynamicMenuModel {
 			public void run() {
 				if(!playerMenus.containsKey(plr)) return;
 				if(playerMenus.get(plr).getInventory().getViewers().size() > 0) return;
-				playerMenus.remove(plr);
+				if(playerMenus.get(plr).isClearOnClose()) playerMenus.remove(plr);
 			}
 		}.runTaskLater(MenuEngine.plugin, 1L);
 	}
