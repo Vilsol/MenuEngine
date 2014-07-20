@@ -2,9 +2,8 @@ package me.vilsol.menuengine.engine;
 
 import java.util.HashMap;
 
-import me.vilsol.menuengine.enums.ClickType;
-
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 public interface MenuItem {

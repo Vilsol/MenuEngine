@@ -4,7 +4,6 @@ import me.vilsol.menuengine.engine.ChatCallback;
 import me.vilsol.menuengine.engine.DynamicMenu;
 import me.vilsol.menuengine.engine.DynamicMenuModel;
 import me.vilsol.menuengine.engine.MenuModel;
-import me.vilsol.menuengine.enums.ClickType;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -42,7 +41,7 @@ public class ItemListener implements Listener {
 			p.setItemOnCursor(new ItemStack(Material.AIR));
 			if(!m.getMenu().isOurItem(e.getCurrentItem())) continue;
 			if(!m.getMenu().getItems().containsKey(e.getSlot())) continue;
-			m.getMenu().getItems().get(e.getSlot()).execute(p, ClickType.getTypeFromAction(e.getAction()));
+			m.getMenu().getItems().get(e.getSlot()).execute(p, e.getClick());
 			return;
 		}
 		
@@ -57,10 +56,10 @@ public class ItemListener implements Listener {
 				}else{
 					e.setCancelled(true);
 					if(i.getDynamicItems().containsKey(e.getSlot())) {
-						i.getDynamicItems().get(e.getSlot()).execute(p, ClickType.getTypeFromAction(e.getAction()));
+						i.getDynamicItems().get(e.getSlot()).execute(p, e.getClick());
 						p.setItemOnCursor(new ItemStack(Material.AIR));
 					}else if(i.getItems().containsKey(e.getSlot())){
-						i.getItems().get(e.getSlot()).execute(p, ClickType.getTypeFromAction(e.getAction()));
+						i.getItems().get(e.getSlot()).execute(p, e.getClick());
 						p.setItemOnCursor(new ItemStack(Material.AIR));
 					}
 				}
