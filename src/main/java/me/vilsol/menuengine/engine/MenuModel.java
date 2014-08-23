@@ -7,8 +7,8 @@ import org.bukkit.event.Listener;
 
 public abstract class MenuModel implements Listener {
 
-	public static HashMap<Class<? extends MenuModel>, MenuModel> menus = new HashMap<Class<? extends MenuModel>, MenuModel>();
-	public static HashMap<Player, Class<? extends MenuModel>> last_menu = new HashMap<Player, Class<? extends MenuModel>>();
+	private static HashMap<Class<? extends MenuModel>, MenuModel> menus = new HashMap<Class<? extends MenuModel>, MenuModel>();
+	private static HashMap<Player, Class<? extends MenuModel>> last_menu = new HashMap<Player, Class<? extends MenuModel>>();
 	protected Menu menu;
 	
 	public MenuModel(int size, String name) {
@@ -26,6 +26,18 @@ public abstract class MenuModel implements Listener {
 		}else{
 			menus.get(last).getMenu().showToPlayer(plr);
 		}
+	}
+
+	public static void setLastMenu(Player plr, Class<? extends MenuModel> menu){
+		last_menu.put(plr, menu);
+	}
+	
+	public static MenuModel getMenu(Class<? extends MenuModel> menu){
+		return menus.get(menu);
+	}
+	
+	public static HashMap<Class<? extends MenuModel>, MenuModel> getAllMenus(){
+		return menus;
 	}
 	
 	public Menu getMenu(){

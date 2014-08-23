@@ -76,7 +76,7 @@ public class Menu {
 	
 	public void showToPlayer(Player plr) {
 		plr.openInventory(inventory);
-		MenuModel.last_menu.put(plr, parent.getClass());
+		MenuModel.setLastMenu(plr, parent.getClass());
 	}
 	
 	public void addItem(Class<? extends MenuItem> itemClass, int slot) {

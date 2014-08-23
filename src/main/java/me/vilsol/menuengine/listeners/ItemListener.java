@@ -34,7 +34,7 @@ public class ItemListener implements Listener {
 		
 		Player p = (Player) e.getWhoClicked();
 		
-		for(MenuModel m : MenuModel.menus.values()) {
+		for(MenuModel m : MenuModel.getAllMenus().values()) {
 			Inventory i = m.getMenu().isThisInventory(e.getInventory());
 			if(i == null) continue;
 			e.setCancelled(true);
@@ -80,7 +80,7 @@ public class ItemListener implements Listener {
 
 	@EventHandler
 	public void onInventoryDrag(InventoryDragEvent e){
-		for(MenuModel m : MenuModel.menus.values()) {
+		for(MenuModel m : MenuModel.getAllMenus().values()) {
 			Inventory i = m.getMenu().isThisInventory(e.getInventory());
 			if(i == null) continue;
 			e.setCancelled(true);
