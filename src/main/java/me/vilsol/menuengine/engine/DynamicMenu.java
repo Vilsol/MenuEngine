@@ -57,7 +57,10 @@ public class DynamicMenu extends Menu {
 	}
 	
 	public void addItemDynamic(Class<? extends MenuItem> itemClass, int slot) {
-		addItemDynamic(itemClass, slot, null);
+		if(!MenuItem.items.containsKey(itemClass)) return;
+		MenuItem item = MenuItem.items.get(itemClass);
+		inventory.setItem(slot, item.getItem());
+		dynamicItems.put(slot, item);
 	}
 	
 	public void addItemDynamic(MenuItem item, int slot) {
@@ -66,7 +69,7 @@ public class DynamicMenu extends Menu {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> void addItemDynamic(Class<? extends MenuItem> itemClass, int slot, T bonus) {
+	public <T> void addItemDynamic(Class<? extends BonusItem<?>> itemClass, int slot, T bonus) {
 		if(!MenuItem.items.containsKey(itemClass)) return;
 		MenuItem item = MenuItem.items.get(itemClass);
 		
