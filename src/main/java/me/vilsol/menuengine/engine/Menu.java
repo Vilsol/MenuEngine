@@ -61,9 +61,6 @@ public class Menu {
 		newInv.setContents(inventory.getContents());
 		inventory = newInv;
 	}
-
-	
-	
 	
 	public boolean isOurItem(ItemStack item) {
 		for (MenuItem i : items.values()) {
@@ -86,7 +83,8 @@ public class Menu {
 		addItem(itemClass, slot, null);
 	}
 	
-	public void addItem(Class<? extends MenuItem> itemClass, int slot, Object bonus) {
+	@SuppressWarnings("unchecked")
+	public <T> void  addItem(Class<? extends MenuItem> itemClass, int slot, T bonus) {
 		if(!MenuItem.items.containsKey(itemClass)) return;
 		MenuItem item = MenuItem.items.get(itemClass);
 		
@@ -96,7 +94,10 @@ public class Menu {
 			} catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
 				e.printStackTrace();
 			}
-			((BonusItem) item).setBonusData(bonus);
+			
+			if(!(item instanceof BonusItem)) return;
+			
+			((BonusItem<T>) item).setBonusData(bonus);
 		}
 		
 		inventory.setItem(slot, item.getItem());

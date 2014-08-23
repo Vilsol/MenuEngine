@@ -1,7 +1,7 @@
 package me.vilsol.menuengine.engine;
 
-public interface BonusItem {
+public interface BonusItem<T> {
 	
-	public void setBonusData(Object o);
+	public void setBonusData(T o);
 	
 }

@@ -65,7 +65,8 @@ public class DynamicMenu extends Menu {
 		dynamicItems.put(slot, item);
 	}
 	
-	public void addItemDynamic(Class<? extends MenuItem> itemClass, int slot, Object bonus) {
+	@SuppressWarnings("unchecked")
+	public <T> void addItemDynamic(Class<? extends MenuItem> itemClass, int slot, T bonus) {
 		if(!MenuItem.items.containsKey(itemClass)) return;
 		MenuItem item = MenuItem.items.get(itemClass);
 		
@@ -75,7 +76,10 @@ public class DynamicMenu extends Menu {
 			} catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
 				e.printStackTrace();
 			}
-			((BonusItem) item).setBonusData(bonus);
+			
+			if(!(item instanceof BonusItem)) return;
+			
+			((BonusItem<T>) item).setBonusData(bonus);
 		}
 		
 		inventory.setItem(slot, item.getItem());
@@ -94,7 +98,7 @@ public class DynamicMenu extends Menu {
 			public void run() {
 				parent.onPlaceItem(thisMenu, item, slot);
 			}
-		}.runTaskLater(MenuEngine.plugin, 1L);
+		}.runTaskLater(MenuEngine.getPlugin(), 1L);
 		delayedRefresh();
 	}
 	
@@ -108,7 +112,7 @@ public class DynamicMenu extends Menu {
 				public void run() {
 					parent.onPickupItem(thisMenu, pl, slot);
 				}
-			}.runTaskLater(MenuEngine.plugin, 1L);
+			}.runTaskLater(MenuEngine.getPlugin(), 1L);
 		}
 		delayedRefresh();
 	}
@@ -120,7 +124,7 @@ public class DynamicMenu extends Menu {
 			public void run() {
 				if(inventory.getViewers() != null && inventory.getViewers().size() > 0) ((Player) inventory.getViewers().get(0)).updateInventory();
 			}
-		}.runTaskLater(MenuEngine.plugin, 2L);
+		}.runTaskLater(MenuEngine.getPlugin(), 2L);
 	}
 	
 	public HashMap<Integer, MenuItem> getDynamicItems(){

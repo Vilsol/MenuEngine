@@ -4,13 +4,17 @@ import me.vilsol.menuengine.listeners.ItemListener;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class MenuEngine extends JavaPlugin {
+public class MenuEngine extends JavaPlugin{
 	
-	public static MenuEngine plugin;
+	private static MenuEngine c;
 	
-	public void onEnable(){
-		plugin = this;
+	public void onEnable() {
+		c = this;
 		getServer().getPluginManager().registerEvents(new ItemListener(), this);
+	}
+	
+	public static JavaPlugin getPlugin(){
+		return c;
 	}
 	
 }
