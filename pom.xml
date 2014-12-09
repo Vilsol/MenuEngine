@@ -13,22 +13,16 @@
 
 	<repositories>
 		<repository>
-			<id>bukkit-repo</id>
-			<url>http://repo.bukkit.org/content/groups/public</url>
+			<id>my-repo</id>
+			<url>http://repo.vil.so/nexus/content/repositories/thirdparty/</url>
 		</repository>
 	</repositories>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>1.7.5-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>craftbukkit</artifactId>
-			<version>1.7.5-R0.1-SNAPSHOT</version>
+			<groupId>org.spigotmc</groupId>
+			<artifactId>spigot-parent</artifactId>
+			<version>1.8-R0.1</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
@@ -43,7 +37,6 @@
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
-					<complianceLevel>1.7</complianceLevel>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
