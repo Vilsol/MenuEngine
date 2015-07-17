@@ -51,8 +51,8 @@ public class ItemListener implements Listener {
 		
 		if(e.getRawSlot() < p.getOpenInventory().getTopInventory().getSize()){
 			if(e.getAction() == InventoryAction.PICKUP_ALL || e.getAction() == InventoryAction.PICKUP_HALF || e.getAction() == InventoryAction.PICKUP_ONE || e.getAction() == InventoryAction.PICKUP_SOME || e.getAction() == InventoryAction.CLONE_STACK || e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY){
-				if(i.isPlaced(e.getRawSlot())){
-					i.removePlaced(e.getRawSlot());
+				if(m.canPickupItem(i, p, e.getRawSlot(), e.getInventory().getItem(e.getRawSlot()))){
+					i.removePlaced(e.getRawSlot(), e.getInventory().getItem(e.getRawSlot()));
 				}else{
 					e.setCancelled(true);
 					if(i.getDynamicItems().containsKey(e.getSlot())) {
@@ -65,7 +65,7 @@ public class ItemListener implements Listener {
 				}
 			}else{
 				if(e.getAction() == InventoryAction.SWAP_WITH_CURSOR || e.getAction() == InventoryAction.PLACE_ALL || e.getAction() == InventoryAction.PLACE_ONE || e.getAction() == InventoryAction.PLACE_SOME){
-					boolean allow = ((DynamicMenuModel) m).canPlaceItem(i, p, e.getRawSlot(), e.getCursor());
+					boolean allow = m.canPlaceItem(i, p, e.getRawSlot(), e.getCursor());
 					if(allow){
 						i.placeItem(e.getRawSlot(), e.getCursor());
 					}else{

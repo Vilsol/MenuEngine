@@ -1,19 +1,17 @@
 package me.vilsol.menuengine.engine;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import me.vilsol.menuengine.MenuEngine;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 public class DynamicMenu extends Menu {
 
-	private HashMap<Integer, ItemStack> placed = new HashMap<Integer, ItemStack>();
 	private HashMap<Integer, MenuItem> dynamicItems = new HashMap<Integer, MenuItem>();
 	private boolean clearOnClose = true;
 	private DynamicMenuModel parent;
@@ -89,13 +87,8 @@ public class DynamicMenu extends Menu {
 		dynamicItems.put(slot, item);
 	}
 	
-	public boolean isPlaced(int slot) {
-		return placed.containsKey(slot);
-	}
-	
 	public void placeItem(final int slot, final ItemStack item) {
 		final DynamicMenu thisMenu = this;
-		placed.put(slot, item);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
@@ -105,18 +98,14 @@ public class DynamicMenu extends Menu {
 		delayedRefresh();
 	}
 	
-	public void removePlaced(final int slot) {
+	public void removePlaced(final int slot, final ItemStack item) {
 		final DynamicMenu thisMenu = this;
-		if(placed.containsKey(slot)){
-			final ItemStack pl = placed.get(slot);
-			placed.remove(slot);
-			new BukkitRunnable() {
+		new BukkitRunnable() {
 				@Override
 				public void run() {
-					parent.onPickupItem(thisMenu, pl, slot);
+					parent.onPickupItem(thisMenu, item, slot);
 				}
 			}.runTaskLater(MenuEngine.getPlugin(), 1L);
-		}
 		delayedRefresh();
 	}
 

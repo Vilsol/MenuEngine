@@ -1,15 +1,14 @@
 package me.vilsol.menuengine.engine;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-
 import me.vilsol.menuengine.MenuEngine;
 import me.vilsol.menuengine.enums.InventorySize;
-
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 
 public abstract class DynamicMenuModel {
 	
@@ -31,8 +30,10 @@ public abstract class DynamicMenuModel {
 	public abstract void addItems(DynamicMenu i, Player plr);
 	
 	public abstract InventorySize getSize(Player plr);
-	
+
 	public abstract boolean canPlaceItem(DynamicMenu i, Player plr, int slot, ItemStack item);
+
+	public abstract boolean canPickupItem(DynamicMenu i, Player plr, int slot, ItemStack item);
 	
 	public abstract void onPickupItem(DynamicMenu i, ItemStack item, int slot);
 	
