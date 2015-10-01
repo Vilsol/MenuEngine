@@ -2,7 +2,9 @@ package me.vilsol.menuengine.engine;
 
 import me.vilsol.menuengine.MenuEngine;
 import me.vilsol.menuengine.enums.InventorySize;
+import me.vilsol.menuengine.utils.CallbackResult;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -31,9 +33,9 @@ public abstract class DynamicMenuModel {
 	
 	public abstract InventorySize getSize(Player plr);
 
-	public abstract boolean canPlaceItem(DynamicMenu i, Player plr, int slot, ItemStack item);
+	public abstract void canPlaceItem(DynamicMenu i, Player plr, int slot, ItemStack item, CallbackResult result, ClickType click);
 
-	public abstract boolean canPickupItem(DynamicMenu i, Player plr, int slot, ItemStack item);
+	public abstract void canPickupItem(DynamicMenu i, Player plr, int slot, ItemStack item, CallbackResult result, ClickType click);
 	
 	public abstract void onPickupItem(DynamicMenu i, ItemStack item, int slot);
 	
